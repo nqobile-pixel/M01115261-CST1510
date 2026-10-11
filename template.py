@@ -2,9 +2,9 @@
 RECORD CHECK  -  my version
 ===========================
 
-Name  : Nqobile Mpofu
+Name  :Nqobile Mbal'enhle Mpofu 
 Lane  : Cyber 
-Date  :04/10/2026
+Date  :11/10/2026
 
 Run it:   python template.py
 
@@ -12,46 +12,54 @@ Work through the numbered sections in order. Each one tells you what it must do.
 Delete these instructions as you replace them with your code.
 """
 
-label = ""      # replace with an input() call
-value = 0.0     # replace with an input() call, converted with float()
-limit = 0.0     # replace with an input() call, converted with float()
+
+def status_of(percent):
+    if percent >=100:
+        return("OVER LIMIT")
+    elif percent >=90:
+            return("WARNING")
+    else:
+            return("OK") 
 
 
-label = input("please enter your name, hostname, and ip address: ")
-first = float(input(" Please enter the first value: "))
-second = float(input("Please enter the second value: "))
+def check(value,limit):
+    """This will reurn the difference and the percentage"""     
 
-difference = 0.0   # replace with your calculation
-percent = 0.0       # replace with your calculation
+    difference=(limit-value)
+    percent=(value/limit*100)
+    return difference,percent
+    
 
-difference = (first - second)
-percent = ( second/ first ) * 100 
+def print_report(label,value,limit,difference,percent, status):
+    """This will print the report"""
+    print("=" * 34)
+    print(f"  RECORD CHECK  -  {label}")
+    print("=" * 34)
+    print(f"Value:{value}")
+    print(f"Label:{limit}")
+    print(f"Difference:{difference}")
+    print(f"Percentage:{percent:.2f}%")
+    print(f"Status:{status}")
+    print("="*34)
 
-print(f" Your personal details are: {label}")
-print(f" The difference is {difference} and the percentage is {percent:.2f}%")
+    
+        
 
-status = ""   # replace with your if / else (or if / elif / else)
+label =(input("Please enter your Name,Hostname, and IP"))
+value = (float(input("Please enter the first number")))
+limit =(float(input("Please enter the second number")))
 
-if percent >= 100:
-    status = "OVER LIMIT"
-elif percent >= 90:
-    status = "WARNING"
-else:
-    status = "OK"   
 
-print(f" The status is: {status}")
+difference,percent=check(value,limit)
+status=status_of(percent)
+
+
 print()
 print("=" * 34)
 print(f"  RECORD CHECK  -  {label}")
 print("=" * 34)
-print(f"  first value: {first :>10.2f}")
-print(f"  second value: {second :>10.2f}")
-print(f"  Status: {status :>10}")
-print(f"  Difference: {difference :>10.2f}")
-print(f"  Percentage: {percent :>10.2f}%")
-
+print_report(label,value,limit,difference,percent,status)
 print("=" * 34)
 
-#Got confused with the loop, stoppedat Typical
 
 
