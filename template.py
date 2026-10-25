@@ -2,9 +2,9 @@
 RECORD CHECK  -  my version
 ===========================
 
-Name  :Nqobile Mbal'enhle Mpofu 
-Lane  : Cyber 
-Date  :11/10/2026
+Name  : Nqobile Mpofu
+Lane  : Cybersecurity
+Date  : 25/10/26
 
 Run it:   python template.py
 
@@ -13,53 +13,58 @@ Delete these instructions as you replace them with your code.
 """
 
 
-def status_of(percent):
-    if percent >=100:
-        return("OVER LIMIT")
-    elif percent >=90:
-            return("WARNING")
-    else:
-            return("OK") 
 
+class Record:
+    over_limit_count=0
 
-def check(value,limit):
-    """This will reurn the difference and the percentage"""     
-
-    difference=(limit-value)
-    percent=(value/limit*100)
-    return difference,percent
-    
-
-def print_report(label,value,limit,difference,percent, status):
-    """This will print the report"""
-    print("=" * 34)
-    print(f"  RECORD CHECK  -  {label}")
-    print("=" * 34)
-    print(f"Value:{value}")
-    print(f"Label:{limit}")
-    print(f"Difference:{difference}")
-    print(f"Percentage:{percent:.2f}%")
-    print(f"Status:{status}")
-    print("="*34)
+    def __init__(self,label,value,limit):
+        """Initialising a record with it's label,value, and limit"""
+        self.label = label
+        self.value = value 
+        self.limit = limit 
+        if self.value>=limit:
+            Record.over_limit_count+=1 #The counter belongs to the Record class
 
     
-        
+    def percent(self ):
+        """Returns value as a percentage of limit"""
+        return (self.value/self.limit)*100
 
-label =(input("Please enter your Name,Hostname, and IP"))
-value = (float(input("Please enter the first number")))
-limit =(float(input("Please enter the second number")))
+    
+    def status(self):
+        """Returns OK,WARNING,OR OVER LIMIT depending on the conditions"""
+        percentage = self.percent()
 
-
-difference,percent=check(value,limit)
-status=status_of(percent)
-
-
-print()
-print("=" * 34)
-print(f"  RECORD CHECK  -  {label}")
-print("=" * 34)
-print_report(label,value,limit,difference,percent,status)
-print("=" * 34)
+        if percentage >= 100:
+            return "OVER LIMIT"
+        elif percentage  >= 90: 
+            return "WARNING"
+        else:
+            return "OK"
 
 
+records = [ 
+    Record("R-001", 87.0,100.0),
+    Record("R-002", 120.0,100.0), 
+    Record("R-003", 95.0,100.0) 
+]   
 
+for record in records:
+    print (record.status())
+
+
+
+for record in records:
+    print()
+    print("=" * 34)
+    print(f"  RECORD CHECK  -  {record.label}")
+    print("=" * 34)
+
+    print(f"Label: {record.label} Value: {record.value} Limit:{record.limit}")
+    print (record.status())
+
+    print("=" * 34)
+
+
+
+#    [ ] Check every method and __init__ has a one-line docstring
