@@ -3,8 +3,8 @@ RECORD CHECK  -  my version
 ===========================
 
 Name  : Nqobile Mpofu
-Lane  : Cybersecurity
-Date  : 25/10/26
+Lane  :  / Cyber    (delete two)
+Date  : 11/3/2026
 
 Run it:   python template.py
 
@@ -12,59 +12,77 @@ Work through the numbered sections in order. Each one tells you what it must do.
 Delete these instructions as you replace them with your code.
 """
 
+def check_record(value, limit):
+    """Calculate the difference, percentage and status for a record."""
+    if limit == 0:
+        raise ValueError("Limit cannot be zero.")
 
-
-class Record:
-    over_limit_count=0
-
-    def __init__(self,label,value,limit):
-        """Initialising a record with it's label,value, and limit"""
-        self.label = label
-        self.value = value 
-        self.limit = limit 
-        if self.value>=limit:
-            Record.over_limit_count+=1 #The counter belongs to the Record class
-
+    difference = limit - value
+    percent = (value / limit) * 100
     
-    def percent(self ):
-        """Returns value as a percentage of limit"""
-        return (self.value/self.limit)*100
 
-    
-    def status(self):
-        """Returns OK,WARNING,OR OVER LIMIT depending on the conditions"""
-        percentage = self.percent()
+    if percent >= 100:
+        status = "OVER LIMIT"
+    elif percent >= 90:
+        status = "WARNING"
+    else:
+        status = "OK"
 
-        if percentage >= 100:
-            return "OVER LIMIT"
-        elif percentage  >= 90: 
-            return "WARNING"
-        else:
-            return "OK"
-
-
-records = [ 
-    Record("R-001", 87.0,100.0),
-    Record("R-002", 120.0,100.0), 
-    Record("R-003", 95.0,100.0) 
-]   
-
-for record in records:
-    print (record.status())
+    return difference, percent, status
 
 
 
-for record in records:
-    print()
+def print_report(label,value,limit,difference,percent, status):
+    """Prints a report showing a records label, value, limit, difference, percentage and status."""
     print("=" * 34)
-    print(f"  RECORD CHECK  -  {record.label}")
+    print(f" RECORD CHECK- {label}")
     print("=" * 34)
+    print(f"Value:{value}")
+    print(f"Label:{label}")
+    print(f"Difference:{difference}")
+    print(f"Percentage:{percent:.2f}%")
+    print(f"Status:{status}")
+    print("="*34)
 
-    print(f"Label: {record.label} Value: {record.value} Limit:{record.limit}")
-    print (record.status())
-
-    print("=" * 34)
 
 
+def load_records(path):
+    """Load records from a file and return a list of dicts."""
+    records = []
+  
+    with open(path, "r") as f:
+        for line in f:
+            label, value, limit = line.strip().split(',')
+            records.append({
+                "label": label,
+                "value": float(value),
+                "limit": float(limit)
+                })
+            
+    return records
 
-#    [ ] Check every method and __init__ has a one-line docstring
+load_records("records_sample.txt")
+new_records = load_records("records_sample.txt")
+print(new_records)
+print("Records loaded successfully.")
+ 
+
+
+   
+
+
+
+
+count_over_limit = 0  # Initialize a counter for OVER LIMIT records
+for record in new_records:   #going through each record in the list of records
+    label = record["label"]
+    value = record["value"]
+    limit = record["limit"]
+
+    difference, percent, status = check_record(value, limit)
+    print_report(label, value, limit, difference, percent, status) #passing the arguments to print_report
+    if status == "OVER LIMIT":
+        count_over_limit += 1
+print(f"Number of records over limit: {count_over_limit}")
+
+
